@@ -1,16 +1,9 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
-import csv
-
-with open('Response.csv') as csvfile:
-    reader = csv.DictReader(csvfile)
-    for row in reader:
-        if row['Colour'] == 'blue':
-            print(row['ID'] ,row ['Make'],row ['Colour'])
 
 
-
+csfont = {'fontname':'Times'}
 chaotic = True
 people = ["Sarah","Michael","Kristtiya","Katie","Turkey","Sam","Elmo","JackBlack","Muffin"]
 num_people = len(people)
@@ -73,4 +66,7 @@ T = nx.relabel_nodes(S,mapping)
 pos = {mapping[k]: v for k,v in seat_positions.items()}
 nx.draw_networkx(T,pos=pos,with_labels=True)
 plt.xlim([-2, num_people/2 + 1])
+plt.title('Table Layout', **csfont)
 plt.show()
+
+
