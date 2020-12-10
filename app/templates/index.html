@@ -1,28 +1,82 @@
 {% extends "base.html" %}
 
 {% block app_content %}
+<body style="
+  background-image: url('./static/christmas-background.jpg');
+  height: 100%;
+  margin: 0;
+">
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h1>Christmas Conflict Creator</h1>
+    <h1 style="color: #bd1320; font-weight:bold;">Christmas Conflict Creator</h1>
   </div>
+  <!-- <img src="{{url_for('static', filename='christmas-background.jpg')}}" /> -->
   <div class="panel-body">
-  <h2>The Problem</h2>
+  <h2 style="color: #007b66;">The Problem</h2>
   Have you ever had trouble enjoying your holiday family dinner due to the wrong amount of conflict? Maybe the people in agreement with each other sat near each other, and their conversations just turned into echo chambers. Or maybe people with differing opinions were mixed in with each other, and there was too much conflict, leading to several broken dishes.
-  <h2>Our Solution</h2>
+  <h2 style="color: #007b66;">Our Solution</h2>
   <p>
-    Our proprietary algorithm
+    Every member of your family will fill out a Google Forms survey with important questions that might cause conflict, such as, “Should pineapple go on pizza?”, and “Is this survey a waste of time?”. The answers to this survey can then be downloaded as a .csv file. Once you have this .csv file, our proprietary* algorithm will take in that data and make a graph out of it, with vertices representing each person. The edges between each person represent if they agree on questions. Next, the algorithm will use clique finding to find the biggest “cliques'' in the graph, ie. clusters of people who agree with each other. Then, depending on whether you selected to maximize or minimize conflict, it will output a seating plan in which cliques are either seated next to each other, or split up as much as possible. This will create the optimal amount of conflict at your family holiday dinner.
   </p>
-  <h2>Background Information</h2>
-  <p>Clique finding</p>
-
-  <h2>How it works</h2>
-  <h3>Survey to Graph</h3>
-
-  <h3>Graph to Seating Arrangement</h3>
-  <h2>Who We Are</h2>
   <p>
-  We are students in the class Discrete Mathematics at Olin College of Engineering, and for our final project, we want to make your family holidays exactly as chaotic as you want them to be!
+    The algorithm works by placing someone in each seat who has the fewest cliques in common with the person across and people beside that seat. So, when it knows a seat and its neighbors, each unseated person will receive a total score of maximal cliques not in common with the neighbors.
+  </p>
+  <h2 style="color: #007b66;">Background Information</h2>
+  <h3 style="color: #bd1320;">Clique finding</h3>
+  <p>
+    Cliques are subsets of undirected graphs such that every two vertices in a clique have an edge connecting them. There are many algorithms that exist to help in finding cliques within a graph. Some that have been discovered specify specific cliques a person may want to find such as finding maximal cliques (single or all), cliques of fixed size, and the maximum/largest clique.
+  </p>
+  <h3 style="color: #bd1320;">Types of Cliques</h3>
+  <strong>Maximal Cliques:</strong>
+  <p>
+    The maximal clique for a person is the largest set of people who all agree with that person on a certain topic. In graph theory, this is the largest set of nodes that are all connected to each other and includes the node representing the person.
+  </p>
+  <strong>Maximum Clique:</strong>
+  <p>
+    The maximum clique is the largest clique possible in the graph.
+  </p>
+  <strong>Fixed Size Cliques:</strong>
+  <p>
+    Any clique that exists in a graph.
+  </p>
+  <h3 style="color: #bd1320;">Existing Algorithms</h3>
+  <strong>Greedy Algorithm:</strong>
+  <p>
+    The greedy algorithm is a type of algorithm that is designed to make the best choice during each step.
+  </p>
+  <p>
+    They are often used to find a single maximal clique of a graph. The way it does so is first by selecting a single random vertex. Then each subsequent vertex added to the clique is determined on a case by case basis. In the case of looking for a single maximal clique, each vertex added after the first one is based on the requirement that each vertex in the clique must have an edge connecting them to all of the other vertices.
+  </p>
+  <strong>Bron-Kerbosch Algorithm:</strong>
+  <p>
+    The Bron-Kerbosch algorithm is an algorithm that looks for all maximal cliques in a graph. This is a recursive algorithm. The algorithm works with a partial, unfinished clique, a set of possible vertices that can be added to make a maximal clique, then a set of vertices that cannot be added to the clique as it would produce a solution that has already been found. First it recursively tries out adding each of the candidate vertices. Once all candidate vertices have been tested, then the forbidden vertices will be tested.
+  </p>
+  <strong>Brute Force Algorithm:</strong>
+  <p>
+    A brute force algorithm is an algorithm that determines all possible candidates to be a solution. In the case of clique-finding, it would give all possible subgraphs. Then, each of the candidates will be checked to see if they satisfy the solution requirements. This methodology is simple to implement, however it has a high cost and the larger the problem, the more the errors. As a result,the brute force method is used for smaller problems. This algorithm can be used to find cliques of fixed size.
+  </p>
+
+  <h2 style="color: #007b66;">How it works</h2>
+  <h3 style="color: #bd1320;">Survey to Graph</h3>
+  <p>
+    Our first piece of code takes in an algorithm and outputs a graph in which each vertex represents a person, and each edge between 2 people represents them agreeing. 
+  </p>
+  <p>
+    This code file uses the software <a href=”https://pandas.pydata.org/”>Pandas</a> to put the data from the .csv file into a data frame, which makes it easier to manipulate to form the graph. We also use <a href=”https://networkx.org/documentation/stable/index.html”>Networkx</a> in order to create the graph.
+  </p>
+  <p>
+    The code first imports the csv file using the Pandas function read_csv, which makes Pandas turn the csv into a data frame. Once the data is in a data frame, it needs to be slightly cleaned up. The code deletes the timestamp column and also converts the “Name” column to the row names, leaving us with a data frame with the names as rows and questions as columns.
+  </p>
+  <p>
+    Once we have the data in the right shape, the code will call a function which initializes the graph, which makes an empty graph using the Networkx library, then adds a vertex for each person. Once the graph has been initialized, the final function build_graph goes through all of the questions and answers, and adds an edge between 2 vertices if the people agree about the question answered.
+  </p>
+
+  <h3 style="color: #bd1320;">Graph to Seating Arrangement</h3>
+  <h2 style="color: #007b66;">Who We Are</h2>
+  <p>
+    We are students in the class Discrete Mathematics at Olin College of Engineering, and for our final project, we want to make your family holidays exactly as chaotic as you want them to be!
   </p>
   </div>
 </div>
+</body>
 {% endblock %}
