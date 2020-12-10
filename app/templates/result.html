@@ -6,8 +6,13 @@
     <h1>Results</h1>
   </div>
   <div class="panel-body">
-    The result and some text will appear here.
-    <img href="url_for('seating.png')"></img>
+    <p>According to our algorithm, this seating arrangement splits cliques of agreement apart and will maximize chaos at your family dinner!</p>
+    <div class="text-center">
+      <img class=" rounded mx-auto d-block" src="data:;base64,{{ image }}"/>
+    </div> 
+    <p>
+      <a class="btn btn-primary" role="button" href="{{url_for('submit')}}">Click here to submit another!</a>
+    </p>
   </div>
 </div>
 {% endblock %}

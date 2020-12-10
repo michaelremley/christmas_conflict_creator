@@ -2,20 +2,12 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.figure import Figure
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+import io
+from base64 import b64encode
 
-def make_seating(people, edges, chaotic = True):
+def make_longtable_graph(num_people):
 
-    #people = ["Sarah","Michael","Kristtiya","Katie","Turkey","Sam","Elmo","JackBlack","Muffin"]
-    #edges = [("Turkey","Sam"),("Sarah","Turkey"),("Sam","Sarah"),("Michael","Kristtiya"),("Elmo","JackBlack")]
-    num_people = len(people)
-    G = nx.Graph()
-    # Get nodes
-    G.add_nodes_from(people)
-    # Get edges, people who agree to not eat meat
-    G.add_edges_from(edges)
-
-    S = nx.Graph()
-    S.add_nodes_from(range(1,num_people))
     if (num_people % 2): # Odd number of people
         table_adjacency = [(a,a+1) for a in range(1,num_people-1)] # Connect into cycle
         table_adjacency.extend([(a,num_people-a) for a in range(1,int((num_people-1)/2))]) # Connect across the table
@@ -32,29 +24,42 @@ def make_seating(people, edges, chaotic = True):
         seat_positions = {k: np.asarray([k,0.5]) for k in range(1,int((num_people)/2)+1)} # Seat the upper row
         seat_positions.update({k: np.asarray([num_people+1-k,0]) for k in range(int(num_people/2)+1,num_people+1)}) # Seat the lower row
 
+    S = nx.Graph()
+    S.add_nodes_from(range(1,num_people))
     S.add_edges_from(table_adjacency)
+    return S, seat_positions
+
+def make_seating(agreement_graph, chaotic = True):
+
+    #people = ["Sarah","Michael","Kristtiya","Katie","Turkey","Sam","Elmo","JackBlack","Muffin"]
+    #edges = [("Turkey","Sam"),("Sarah","Turkey"),("Sam","Sarah"),("Michael","Kristtiya"),("Elmo","JackBlack")]
+    num_people = len(agreement_graph.nodes)
+    # Make the agreement graph from people and edges (agreements)
+    # Make the table graph with adjacency for neighboring seats
+    # Also generate the positions of seats for plotting
+    table, seat_positions = make_longtable_graph(num_people)
 
     # For every person, list their cliques
     clique_dict = {}
-    clique_list = list(nx.find_cliques(G))
+    clique_list = list(nx.find_cliques(agreement_graph))
 
-    for person in G.nodes():
+    for person in agreement_graph.nodes():
         for clique in clique_list:
             if str(person) in clique:
                 clique_dict[person] = clique
 
     mapping = {} # Dictionary of seat number to person sitting in it
     # For every seat
-    for seat in S.nodes():
+    for seat in table.nodes():
         # Give people scores
         scores = {}
         # For every neighbor
-        for person in G.nodes():
-            for neighbor in nx.neighbors(S,seat):
+        for person in agreement_graph.nodes():
+            for neighbor in nx.neighbors(table,seat):
                 # if nx.is_isolate(G,person):
                 #     scores[person] = scores.get(person, 0) + 2
                 # Give points to people not in cliques with the neighbors
-                if mapping.get(neighbor,None) not in nx.neighbors(G,person):
+                if mapping.get(neighbor,None) not in nx.neighbors(agreement_graph,person):
                     scores[person] = scores.get(person, 0) + 1
                 scores[person] = scores.get(person, 0)
         # Seat unseated person with best score here
@@ -63,14 +68,15 @@ def make_seating(people, edges, chaotic = True):
                 mapping[seat] = person[0]
                 break
         # Remove the person from the unseated pool
-    T = nx.relabel_nodes(S,mapping)
+    T = nx.relabel_nodes(table,mapping)
     pos = {mapping[k]: v for k,v in seat_positions.items()}
     fig = Figure()
-    axis = fig.add_subplot(1, 1, 1)
-    nx.draw_networkx(T,pos=pos,with_labels=True,ax=axis)
-    plt.xlim([-2, num_people/2 + 1])
-    #plt.show()
-    return fig
-    fig = clq.make_seating(G.nodes,G.edges)
     output = io.BytesIO()
+    axis = fig.add_subplot(1, 1, 1)
+    axis.set_xlim(-0.1, num_people/2 + 1)
+    axis.set_ylim(-0.1,0.6)
+    nx.draw_networkx(T,pos=pos,with_labels=True,ax=axis)
+    # plt.xlim([-2, num_people/2 + 1])
+    #plt.show()
     FigureCanvas(fig).print_png(output)
+    return b64encode(output.getvalue()).decode("utf-8")
