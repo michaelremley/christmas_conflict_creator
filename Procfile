@@ -1,1 +1,1 @@
-web: gunicorn app:christmas_conflict_creator
+web: gunicorn app:app
