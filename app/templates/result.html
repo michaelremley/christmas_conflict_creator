@@ -6,10 +6,14 @@
     <h1>Results</h1>
   </div>
   <div class="panel-body">
+    {% if chaotic %}
     <p>According to our algorithm, this seating arrangement splits cliques of agreement apart and will maximize chaos at your family dinner!</p>
+    {% else %}
+    <p>According to our algorithm, this seating arrangement keeps people close to those they agree with for a peaceful dinner!</p>
+    {% endif %}
     <div class="text-center">
       <img class=" rounded mx-auto d-block" src="data:;base64,{{ image }}"/>
-    </div> 
+    </div>
     <p>
       <a class="btn btn-primary" role="button" href="{{url_for('submit')}}">Click here to submit another!</a>
     </p>
