@@ -1,10 +1,14 @@
 {% extends 'bootstrap/base.html' %}
 
 {% block title %}
-    {% if title %}{{ title }} - Microblog{% else %}Welcome to Microblog{% endif %}
+    {% if title %}{{ title }} - Discrete Final Project{% else %}Christas Conflict Creator{% endif %}
 {% endblock %}
 
 {% block navbar %}
+<body style="
+  background-image: url('./static/christmas-background.jpg');
+  height: 100%;
+  margin: 0;">
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
           <div class="navbar-header">
@@ -20,6 +24,7 @@
                   <ul class="nav navbar-nav">
                       <li><a href="{{ url_for('index') }}">Home</a></li>
                       <li><a href="{{ url_for('submit') }}">Submit</a></li>
+                      <li><a href="{{ url_for('sources') }}">Sources</a></li>
                   </ul>
               </div>
         </div>

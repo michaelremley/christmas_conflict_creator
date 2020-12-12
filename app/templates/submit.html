@@ -2,11 +2,46 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
-    <h1>Submit Survey File</h1>
-    <p>This is the exported CSV file from Google Forms</p>  
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h1 style="color: #bd1320; font-weight:bold;">Submit</h1>
+  </div>
+  <div class="panel-body">
+
+    <h2 style="color: #007b66;">Ready to submit now?</h2>
+    <p>This is the exported CSV file from Google Forms</p>
     <div class="row">
         <div class="col-md-4">
             {{ wtf.quick_form(form) }}
         </div>
     </div>
+
+    <h2 style="color: #007b66;">Just want to test the algorithm?</h2>
+    <p>
+      Download <a href=”https://drive.google.com/file/d/1jcw6oseozocOTFlelCxhx-FFWm-V6k6A/view?usp=sharing”>this .csv file</a> that we have made using a google forms survey
+    </p>
+
+    <h2 style="color: #007b66;">Want to try out the algorithm on your own data?</h2>
+    <h3 style="color: #bd1320;">Create a Google Forms survey</h3>
+    <p>
+      You can create your own Google form in order to ask your own questions and get data from your holiday celebration group, but you need to follow certain requirements for the algorithm to work correctly.
+    </p>
+    <ul>
+      <li>First question must ask for name or other identifier used to keep track of who is responding</li>
+      <li>All other questions must be multiple choice and be required</li>
+    </ul>
+    <p>
+      <a href=”https://docs.google.com/forms/d/1akM1g0TFVeqojyb0FZF4QeRufvEDgftPATkgbjgJ_jc/edit?usp=sharing”>Here is an example</a> of a Google Form. You can copy this one to make your own if you would like.
+    </p>
+    <p>
+      Then go to the responses tab on the survey, and click the Google sheets icon to view responses in sheets. This should bring you to a Google spreadsheet with the survey answers.
+    </p>
+    <p>
+      Next, download the Google spreadsheet as a .csv file by going to File->Download->Comma Separated Values.
+    </p>
+    <p>
+      Now you should have a .csv file which you can upload to this website to get your custom seating plan! 
+    </p>
+  </div>
+</div>
 {% endblock %}

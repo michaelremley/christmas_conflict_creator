@@ -9,6 +9,10 @@ import app.clique as clq
 def index():
     return render_template("index.html")
 
+@app.route('/sources')
+def sources():
+    return render_template("sources.html")
+
 @app.route('/submit', methods=['GET', 'POST'])
 def submit():
     form = SubmitForm()

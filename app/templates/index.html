@@ -1,11 +1,7 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-<body style="
-  background-image: url('./static/christmas-background.jpg');
-  height: 100%;
-  margin: 0;
-">
+
 <div class="panel panel-default">
   <div class="panel-heading">
     <h1 style="color: #bd1320; font-weight:bold;">Christmas Conflict Creator</h1>
@@ -59,7 +55,7 @@
   <h2 style="color: #007b66;">How it works</h2>
   <h3 style="color: #bd1320;">Survey to Graph</h3>
   <p>
-    Our first piece of code takes in an algorithm and outputs a graph in which each vertex represents a person, and each edge between 2 people represents them agreeing. 
+    Our first piece of code takes in an algorithm and outputs a graph in which each vertex represents a person, and each edge between 2 people represents them agreeing.
   </p>
   <p>
     This code file uses the software <a href=”https://pandas.pydata.org/”>Pandas</a> to put the data from the .csv file into a data frame, which makes it easier to manipulate to form the graph. We also use <a href=”https://networkx.org/documentation/stable/index.html”>Networkx</a> in order to create the graph.
