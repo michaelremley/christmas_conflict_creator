@@ -7,15 +7,6 @@
     <h1 style="color: #bd1320; font-weight:bold;">Submit</h1>
   </div>
   <div class="panel-body">
-
-    <h2 style="color: #007b66;">Ready to submit now?</h2>
-    <p>This is the exported CSV file from Google Forms</p>
-    <div class="row">
-        <div class="col-md-4">
-            {{ wtf.quick_form(form) }}
-        </div>
-    </div>
-
     <h2 style="color: #007b66;">Just want to test the algorithm?</h2>
     <p>
       Download <a href="https://drive.google.com/file/d/1jcw6oseozocOTFlelCxhx-FFWm-V6k6A/view?usp=sharing">this .csv file</a> that we have made using a google forms survey
@@ -42,6 +33,16 @@
     <p>
       Now you should have a .csv file which you can upload to this website to get your custom seating plan!
     </p>
+
+    <h2 style="color: #007b66;">Ready to submit now?</h2>
+    <p>This is the exported CSV file from Google Forms</p>
+    <div class="row">
+        <div class="col-md-4">
+            {{ wtf.quick_form(form) }}
+        </div>
+    </div>
+
+
   </div>
 </div>
 {% endblock %}
