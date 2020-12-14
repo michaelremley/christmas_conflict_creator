@@ -58,7 +58,7 @@
     Our first piece of code takes in an algorithm and outputs a graph in which each vertex represents a person, and each edge between 2 people represents them agreeing.
   </p>
   <p>
-    This code file uses the software <a href=”https://pandas.pydata.org/”>Pandas</a> to put the data from the .csv file into a data frame, which makes it easier to manipulate to form the graph. We also use <a href=”https://networkx.org/documentation/stable/index.html”>Networkx</a> in order to create the graph.
+    This code file uses the software <a href="https://pandas.pydata.org/">Pandas</a> to put the data from the .csv file into a data frame, which makes it easier to manipulate to form the graph. We also use <a href="https://networkx.org/documentation/stable/index.html">Networkx</a> in order to create the graph.
   </p>
   <p>
     The code first imports the csv file using the Pandas function read_csv, which makes Pandas turn the csv into a data frame. Once the data is in a data frame, it needs to be slightly cleaned up. The code deletes the timestamp column and also converts the “Name” column to the row names, leaving us with a data frame with the names as rows and questions as columns.
