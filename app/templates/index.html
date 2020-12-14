@@ -68,6 +68,21 @@
   </p>
 
   <h3 style="color: #bd1320;">Graph to Seating Arrangement</h3>
+  <p>
+    Our code uses Networkx, Matplotlib, and Numpy to do the mathematics of this project. Networkx comes with many algorithms built in, including clique finding and graph coloring. It is implemented in Python. To get from a set of survey responses to an optimal seating arrangement, you must first upload the CSV file and turn it into an agreement graph as explained in the previous section. Assuming that graph is in order, we can continue.
+  </p>
+  <p>
+    The first thing the algorithm checks is if the user has asked for a chaotic arrangement or a peaceful arrangement. If the user has asked for a chaotic arrangement, no changes to the agreement graph are necessary. However, if the user has asked for a peaceful arrangement, the complement of the graph is used, where every disagreement is an edge and people who agree on issues are not connected.
+  </p>
+  <p>
+    Next, we need a graph describing the seating arrangement. This is assumed to be a long table where the odd-numbered person is sat on the end as they probably would in real life. Every seat is connected to its side neighbor(s) and the person across from them, since these are the people with whom they speak and disagree.
+  </p>
+  <p>
+    For the first seated person, the choice is random. After that, we seat everyone by moving around the table clockwise to assign someone to each seat. When deciding who should sit in a given seat, we look at everyone who has not been seated yet. The person who gets assigned to this seat is the one who has the most total disagreements with the neighbors already sitting at the table. If the goal is a peaceful arrangement, the person who has the most total agreements is assigned instead. This is repeated until everyone has been assigned to a seat.
+  </p>
+  <p>
+    With the final seating arrangement, we generate an image of the table and display it so you know how to arrange your dinner table for the holidays!
+  </p>
   <h2 style="color: #007b66;">Who We Are</h2>
   <p>
     We are students in the class Discrete Mathematics at Olin College of Engineering, and for our final project, we want to make your family holidays exactly as chaotic as you want them to be!
