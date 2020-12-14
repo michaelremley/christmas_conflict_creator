@@ -35,6 +35,9 @@ https://medium.com/the-andela-way/deploying-a-python-flask-app-to-heroku-41250bd
 
 ## Update Heroku app
 https://christmas-conflict-creator.herokuapp.com/
+
 `git add`
+
 `git commit`
+
 `git push heroku HEAD:master`
