@@ -36,8 +36,6 @@ def make_longtable_graph(num_people):
 
 def make_seating(agreement_graph, chaotic = True):
 
-    #people = ["Sarah","Michael","Kristtiya","Katie","Turkey","Sam","Elmo","JackBlack","Muffin"]
-    #edges = [("Turkey","Sam"),("Sarah","Turkey"),("Sam","Sarah"),("Michael","Kristtiya"),("Elmo","JackBlack")]
     num_people = len(agreement_graph.nodes)
     if not chaotic:
         agreement_graph = nx.complement(agreement_graph)
@@ -45,7 +43,14 @@ def make_seating(agreement_graph, chaotic = True):
     # Make the table graph with adjacency for neighboring seats
     # Also generate the positions of seats for plotting
     table, seat_positions = make_longtable_graph(num_people)
-
+    # For every person, list their cliques
+    clique_dict = {}
+    #clique_list = list(nx.find_cliques(G))
+    clique_list = (list(nx.enumerate_all_cliques(G)))
+    for person in G.nodes():
+        clique_dict[person] = []
+        for clique in [c for c in clique_list if str(person) in c]:
+            clique_dict[person].append(clique)
 
     mapping = {} # Dictionary of seat number to person sitting in it
     # For every seat
@@ -53,19 +58,23 @@ def make_seating(agreement_graph, chaotic = True):
         # Give people scores
         scores = {}
         # For every neighbor
-        for person in agreement_graph.nodes():
+        for person in [p for p in agreement_graph.nodes() if p not in mapping.values()]:
             for neighbor in nx.neighbors(table,seat):
-                # Give points to people not in cliques with the neighbors
-                if mapping.get(neighbor,None) not in nx.neighbors(agreement_graph,person):
-                    scores[person] = scores.get(person, 0) + 1
-                scores[person] = scores.get(person, 0)
+                for clique in clique_dict[person]:
+                    # Give points to people not in cliques with the neighbors
+                    # if mapping.get(neighbor,None) in nx.neighbors(agreement_graph,person):
+                    #     scores[person] = scores.get(person, 0) - 1
+                    if mapping.get(neighbor,None) in clique:
+                        scores[person] = scores.get(person, 0) - 2
+                    scores[person] = scores.get(person, 0)
         # Seat unseated person with best score here
-        print(scores)
-        for person in sorted(scores.items(),key=lambda x: x[1]):
+        print("{}: {}\n".format(seat,sorted(scores.items(),key=lambda x: x[1],reverse=True)))
+        for person in sorted(scores.items(),key=lambda x: x[1],reverse=True):
             if person[0] not in mapping.values():
                 mapping[seat] = person[0]
                 break
         # Remove the person from the unseated pool
+    print(mapping)
     T = nx.relabel_nodes(table,mapping)
     pos = {mapping[k]: v for k,v in seat_positions.items()}
     fig = Figure()
@@ -78,3 +87,12 @@ def make_seating(agreement_graph, chaotic = True):
     #plt.show()
     FigureCanvas(fig).print_png(output)
     return b64encode(output.getvalue()).decode("utf-8")
+
+if __name__ == "__main__":
+    people = ["Sarah","Michael","Kristtiya","Katie","Turkey","Sam","Elmo","JackBlack","Muffin"]
+    edges = [("Turkey","Sam"),("Sarah","Turkey"),("Sam","Sarah"),("Michael","Kristtiya"),("Elmo","JackBlack")]
+    G = nx.Graph()
+    G.add_nodes_from(people)
+    G.add_edges_from(edges)
+
+    make_seating(G)
