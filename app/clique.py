@@ -45,13 +45,13 @@ def make_seating(agreement_graph, chaotic = True):
     table, seat_positions = make_longtable_graph(num_people)
     # For every person, list their cliques
     clique_dict = {}
-    #clique_list = list(nx.find_cliques(G))
-    clique_list = (list(nx.enumerate_all_cliques(G)))
-    for person in G.nodes():
+    #clique_list = list(nx.find_cliques(agreement_graph))
+    clique_list = (list(nx.enumerate_all_cliques(agreement_graph)))
+    for person in agreement_graph.nodes():
         clique_dict[person] = []
-        for clique in [c for c in clique_list if str(person) in c]:
+        for clique in [c for c in clique_list if str(person) in c and len(c) > 1]:
             clique_dict[person].append(clique)
-
+    # print(clique_dict)
     mapping = {} # Dictionary of seat number to person sitting in it
     # For every seat
     for seat in table.nodes():
