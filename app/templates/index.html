@@ -23,41 +23,47 @@
     Cliques are subsets of undirected graphs such that every two vertices in a clique have an edge connecting them. There are many algorithms that exist to help in finding cliques within a graph. Some that have been discovered specify specific cliques a person may want to find such as finding maximal cliques (single or all), cliques of fixed size, and the maximum/largest clique.
   </p>
   <h3 style="color: #bd1320;">Types of Cliques</h3>
+  <image src="{{url_for('static',filename = 'Maximal.png')}} " class="img-responsive" />
+
   <strong>Maximal Cliques:</strong>
   <p>
-    The maximal clique for a person is the largest set of people who all agree with that person on a certain topic. In graph theory, this is the largest set of nodes that are all connected to each other and includes the node representing the person.
-  </p>
-  <image src="{{url_for('static',filename = 'Maximal.png')}} " class="img-responsive" />
+    The maximal clique for a person is the largest set of people who all agree with that person on a certain topic. In graph theory, this is the largest set of nodes that are all connected to each other and includes the node representing the person.   </p>
+
   <strong>Maximum Clique:</strong>
   <p>
-    The maximum clique is the largest clique possible in the graph.
+    The maximum clique is the largest clique possible in the graph. The largest clique in the graph above is made by (Santa, Snowman, Mrs. Claus, and Penguin) because each person is connected to the other 3.
   </p>
   <strong>Fixed Size Cliques:</strong>
   <p>
-    Any clique that exists in a graph.
+    Any clique that exists in a graph. For example, (Santa, Rudolph, and Snowman) all agree on something and form a clique of 3, but smaller cliques of 2 also form (Santa, Rudolph), (Santa, Snowman), and (Rudolph, Snowman).
   </p>
   <h3 style="color: #bd1320;">Existing Algorithms</h3>
   <strong>Greedy Algorithm:</strong>
   <p>
     The greedy algorithm is a type of algorithm that is designed to make the best choice during each step.
-  </p>
+    They are often used to find a single maximal clique of a graph. The way it does so is first by selecting a single random vertex. Then each subsequent vertex added to the clique is determined on a case by case basis. In the case of looking for a single maximal clique, each vertex added after the first one is based on the requirement that each vertex in the clique must have an edge connecting them to all of the other vertices.
+      </p>
   <p>
     They are often used to find a single maximal clique of a graph. The way it does so is first by selecting a single random vertex. Then each subsequent vertex added to the clique is determined on a case by case basis. In the case of looking for a single maximal clique, each vertex added after the first one is based on the requirement that each vertex in the clique must have an edge connecting them to all of the other vertices.
   </p>
   <strong>Bron-Kerbosch Algorithm:</strong>
   <p>
-    The Bron-Kerbosch algorithm is an algorithm that looks for all maximal cliques in a graph. This is a recursive algorithm. The algorithm works with a partial, unfinished clique, a set of possible vertices that can be added to make a maximal clique, then a set of vertices that cannot be added to the clique as it would produce a solution that has already been found. First it recursively tries out adding each of the candidate vertices. Once all candidate vertices have been tested, then the forbidden vertices will be tested.
-  </p>
+    The Bron-Kerbosch algorithm is an algorithm that looks for all maximal cliques in a graph. This is a recursive algorithm. The algorithm works with a partial, unfinished clique, a set of possible vertices that can be added to make a maximal clique, then a set of vertices that cannot be added to the clique as it would produce a solution that has already been found. First it recursively tries out adding each of the candidate vertices. Once all candidate vertices have been tested, then the forbidden vertices will be tested.  </p>
   <strong>Brute Force Algorithm:</strong>
   <p>
-    A brute force algorithm is an algorithm that determines all possible candidates to be a solution. In the case of clique-finding, it would give all possible subgraphs. Then, each of the candidates will be checked to see if they satisfy the solution requirements. This methodology is simple to implement, however it has a high cost and the larger the problem, the more the errors. As a result,the brute force method is used for smaller problems. This algorithm can be used to find cliques of fixed size.
+    A brute force algorithm is an algorithm that determines all possible candidates to be a solution. In the case of clique-finding, it would give all possible subgraphs. Then, each of the candidates will be checked to see if they satisfy the solution requirements. This methodology is simple to implement, however it has a high cost and the larger the problem, the more the errors. As a result,the brute force method is used for smaller problems. 
+    This algorithm can be used to find cliques of fixed size. 
+      
   </p>
-
+  <strong>Branch and Bound Algorithm:</strong>
+  <p>
+    A brute force algorithm is an algorithm that determines all possible candidates to be a solution. In the case of clique-finding, it would give all possible subgraphs. Then, each of the candidates will be checked to see if they satisfy the solution requirements. This methodology is simple to implement, however it has a high cost and the larger the problem, the more the errors. As a result,the brute force method is used for smaller problems. This algorithm can be used to find cliques of fixed size.
+  
+  </p>
   <h2 style="color: #007b66;">How it works</h2>
   <h3 style="color: #bd1320;">Survey to Graph</h3>
   <p>
-    Our first piece of code takes in an algorithm and outputs a graph in which each vertex represents a person, and each edge between 2 people represents them agreeing.
-  </p>
+    A branch and bound algorithm is an approach that enumerates all candidates for being a solution. The candidates form a rooted tree and the algorithm explores the different candidates. If a solution is found that produces a better solution, then a new branch is added and vertex represents said solution. This methodology is efficient when it comes to finding a solution, but the tradeoff is its speed. There have been studies applying this algorithm methodology while also trying to improve the time it takes to determine the solution, as shown in Östergård’s 2002 paper which aimed to use the branch and bound algorithm to find the maximum clique in a graph.  </p>
   <p>
     This code file uses the software <a href="https://pandas.pydata.org/">Pandas</a> to put the data from the .csv file into a data frame, which makes it easier to manipulate to form the graph. We also use <a href="https://networkx.org/documentation/stable/index.html">Networkx</a> in order to create the graph.
   </p>
