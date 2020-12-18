@@ -46,6 +46,7 @@ def make_seating(agreement_graph, chaotic = True):
     # For every person, list their cliques
     clique_dict = {}
     #clique_list = list(nx.find_cliques(agreement_graph))
+    # List every clique for every person
     clique_list = (list(nx.enumerate_all_cliques(agreement_graph)))
     for person in agreement_graph.nodes():
         clique_dict[person] = []
@@ -61,11 +62,9 @@ def make_seating(agreement_graph, chaotic = True):
         for person in [p for p in agreement_graph.nodes() if p not in mapping.values()]:
             for neighbor in nx.neighbors(table,seat):
                 for clique in clique_dict[person]:
-                    # Give points to people not in cliques with the neighbors
-                    # if mapping.get(neighbor,None) in nx.neighbors(agreement_graph,person):
-                    #     scores[person] = scores.get(person, 0) - 1
+                    # "Punish" candidates who are in cliques with neighbors
                     if mapping.get(neighbor,None) in clique:
-                        scores[person] = scores.get(person, 0) - 2
+                        scores[person] = scores.get(person, 0) - 1
                     scores[person] = scores.get(person, 0)
         # Seat unseated person with best score here
         print("{}: {}\n".format(seat,sorted(scores.items(),key=lambda x: x[1],reverse=True)))
@@ -73,26 +72,31 @@ def make_seating(agreement_graph, chaotic = True):
             if person[0] not in mapping.values():
                 mapping[seat] = person[0]
                 break
-        # Remove the person from the unseated pool
+
     print(mapping)
+    # Apply the calculated seating arrangement
     T = nx.relabel_nodes(table,mapping)
     pos = {mapping[k]: v for k,v in seat_positions.items()}
+    # Plot the seating arrangement
     fig = Figure()
     output = io.BytesIO()
     axis = fig.add_subplot(1, 1, 1)
     axis.set_xlim(-0.1, num_people/2 + 1)
     axis.set_ylim(-0.1,0.6)
     nx.draw_networkx(T,pos=pos,with_labels=True,ax=axis)
-    # plt.xlim([-2, num_people/2 + 1])
-    #plt.show()
+
+    # Return an image to the flask application
     FigureCanvas(fig).print_png(output)
     return b64encode(output.getvalue()).decode("utf-8")
 
 if __name__ == "__main__":
-    people = ["Sarah","Michael","Kristtiya","Katie","Turkey","Sam","Elmo","JackBlack","Muffin"]
-    edges = [("Turkey","Sam"),("Sarah","Turkey"),("Sam","Sarah"),("Michael","Kristtiya"),("Elmo","JackBlack")]
+    # people = ["Sarah","Michael","Kristtiya","Katie","Turkey","Sam","Elmo","JackBlack","Muffin"]
+    # edges = [("Turkey","Sam"),("Sarah","Turkey"),("Sam","Sarah"),("Michael","Kristtiya"),("Elmo","JackBlack")]
+    people = ["Rudolph","Santa","Snowman","Mrs. Claus","Penguin"]
+    edges = [("Rudolph","Santa"),("Santa","Snowman"),("Rudolph","Snowman"),("Santa","Mrs. Claus"),("Santa","Penguin"),
+            ("Snowman","Mrs. Claus"),("Mrs. Claus","Penguin"),("Penguin","Rudolph")]
     G = nx.Graph()
     G.add_nodes_from(people)
     G.add_edges_from(edges)
-
     make_seating(G)
+    plt.show()
