@@ -51,14 +51,14 @@
     The Bron-Kerbosch algorithm is an algorithm that looks for all maximal cliques in a graph. This is a recursive algorithm. The algorithm works with a partial, unfinished clique, a set of possible vertices that can be added to make a maximal clique, then a set of vertices that cannot be added to the clique as it would produce a solution that has already been found. First it recursively tries out adding each of the candidate vertices. Once all candidate vertices have been tested, then the forbidden vertices will be tested.  </p>
   <strong>Brute Force Algorithm:</strong>
   <p>
-    A brute force algorithm is an algorithm that determines all possible candidates to be a solution. In the case of clique-finding, it would give all possible subgraphs. Then, each of the candidates will be checked to see if they satisfy the solution requirements. This methodology is simple to implement, however it has a high cost and the larger the problem, the more the errors. As a result,the brute force method is used for smaller problems. 
-    This algorithm can be used to find cliques of fixed size. 
-      
+    A brute force algorithm is an algorithm that determines all possible candidates to be a solution. In the case of clique-finding, it would give all possible subgraphs. Then, each of the candidates will be checked to see if they satisfy the solution requirements. This methodology is simple to implement, however it has a high cost and the larger the problem, the more the errors. As a result,the brute force method is used for smaller problems.
+    This algorithm can be used to find cliques of fixed size.
+
   </p>
   <strong>Branch and Bound Algorithm:</strong>
   <p>
     A brute force algorithm is an algorithm that determines all possible candidates to be a solution. In the case of clique-finding, it would give all possible subgraphs. Then, each of the candidates will be checked to see if they satisfy the solution requirements. This methodology is simple to implement, however it has a high cost and the larger the problem, the more the errors. As a result,the brute force method is used for smaller problems. This algorithm can be used to find cliques of fixed size.
-  
+
   </p>
   <h2 style="color: #007b66;">How it works</h2>
   <h3 style="color: #bd1320;">Survey to Graph</h3>
@@ -75,23 +75,41 @@
   </p>
 
   <h3 style="color: #bd1320;">Graph to Seating Arrangement</h3>
-  <p>
-    We used the Python libraries Networkx, Matplotlib, and Numpy to do the mathematics of this project. Networkx comes with many algorithms built in, including clique finding and graph coloring.
-  </p>
-  <p>
-    Once the user’s .csv file is turned into an agreement graph by the process in the last section, the algorithm checks if the user has asked for a chaotic arrangement or a peaceful arrangement. If the user has asked for a chaotic arrangement, no changes to the agreement graph are necessary. However, if the user has asked for a peaceful arrangement, the complement of the graph is used, where every disagreement is an edge and people who agree on issues are not connected.
-  </p>
-  <p>
-    Next, we need a graph describing the seating arrangement. This is assumed to be a long table where the odd-numbered person is sat on the end as they probably would in real life. Every seat is connected to its side neighbor(s) and the person across from them, since these are the people with whom they speak and disagree.
-  </p>
-  <image src="{{url_for('static',filename = 'seating_graph.png')}}" />
-  <p>Example of the seating arrangement graph for 7 people</p>
-  <p>
-    For the first seated person, the choice is random. After that, we seat everyone by moving around the table clockwise to assign someone to each seat. The algorithm decides who should sit in a given seat by considering everyone who has not been seated yet. The person who gets assigned to this seat is the one who has the most total disagreements with the neighbors already sitting at the table. If the goal is a peaceful arrangement, the person who has the most total agreements is assigned instead. This is repeated until everyone has been assigned to a seat. 
-  </p>
-  <p>
-    With the final seating arrangement, we generate an image of the table and display it so you know how to arrange your dinner table for the holidays!
-  </p>
+  <p>We used the Python libraries Networkx, Matplotlib, and Numpy to do the mathematics of this project. Networkx comes with many algorithms built in, including clique finding and graph coloring.</p>
+
+<p>Once the user’s .csv file is turned into an agreement graph by the process in the last section, the algorithm checks if the user has asked for a chaotic arrangement or a peaceful arrangement. If the user has asked for a chaotic arrangement, no changes to the agreement graph are necessary. However, if the user has asked for a peaceful arrangement, the complement of the graph is used, where every disagreement is an edge and people who agree on issues are not connected. With the agreement graph, we find and list all cliques for each person so that we can refer to them later.</p>
+<p>For a theoretical quiz result where three animals agree, Mrs. and Mr. Claus agree, and a snowman agrees with nobody, we get the following agreement graph.
+<image src="{{url_for('static',filename = 'Agreement.png')}} " class="img-responsive" />
+<p>In this example, there are 5 cliques: a clique of the 3 animals, a clique for each pair of animals, and a clique with Mrs. and Mr. Claus.</p>
+<image src="{{url_for('static',filename = 'Cliques.png')}} " class="img-responsive" />
+	<p>Next, we need a graph describing the seating arrangement. This is assumed to be a long table where the odd-numbered person is sat on the end as they probably would in real life. Every seat is connected to its side neighbor(s) and the person across from them, since these are the people with whom they speak and disagree.</p>
+
+<image src="{{url_for('static',filename = 'EmptyTable.png')}} " class="img-responsive" />
+
+<p>Starting with seat #1, we move clockwise. This choice is random because there are not yet neighbors to check cliques against. In this case, it is the abominable snowman who gets this seat.
+<image src="{{url_for('static',filename = 'Table1.png')}} " class="img-responsive" />
+
+<p>For the next seat #2, we count how many cliques each other character has with the abominable snowman, then they lose 1 point for each clique. The Reindeer and Penguin are both in the clique of 3 and in a clique of 2 with the abominable snowman, so they both have a score of -2. The other characters lose no points because they are in no cliques with the abominable snowman. The regular snowman has a highest score, so he gets sat in chair #2.</p>
+<image src="{{url_for('static',filename = 'Table2.png')}} " class="img-responsive" />
+
+<p>For seat #3, nobody is in a clique with the regular snowman, so everyone has a score of zero. We will say that Santa is randomly selected for seat #3.</p>
+<image src="{{url_for('static',filename = 'Table3.png')}} " class="img-responsive" />
+
+<p>For seat #4, Mrs. Claus is in a clique with Santa, so her score goes down. The reindeer is randomly selected from the two 0's for seat #4.</p>
+<image src="{{url_for('static',filename = 'Table4.png')}} " class="img-responsive" />
+
+<p>For seat #5, neither Mrs. Claus or the penguin are in cliques with the snowman, so no scores change. The penguin is in a clique with the reindeer, so their score is -1. Mrs. Claus gets to be in seat #5 with a high score of zero.</p>
+<image src="{{url_for('static',filename = 'Table5.png')}} " class="img-responsive" />
+
+<p>The penguin gets the final seat with a score of -1 because there are no other options.</p>
+<image src="{{url_for('static',filename = 'Table6.png')}} " class="img-responsive" />
+
+<p>In this final arrangement, Mr. and Mrs. Claus were split up, and one of the animals was separated from their clique. This is not an optimal solution, since the following seating arrangement would break apart all cliques.</p>
+<image src="{{url_for('static',filename = 'Optimal.png')}} " class="img-responsive" />
+
+<p>In summary, we seat everyone by moving around the table clockwise to assign someone to each seat. The algorithm decides who should sit in a given seat by considering everyone who has not been seated yet. The person who is in the fewest and smallest cliques with the neighbors of this seat will be seated here. For each person, not only does their maximal clique count against them but so does every agreement with other people in the clique. This way, the largest cliques are most likely to be broken apart. If the goal is a peaceful arrangement, the person who has the most total cliques in common with the neighbors is assigned instead. This is repeated until everyone has been assigned to a seat.
+With the final seating arrangement, we generate an image of the table and display it so you know how to arrange your dinner table for the holidays!</p>
+
   <h2 style="color: #007b66;">Who We Are</h2>
   <p>
     We are students in the class Discrete Mathematics at Olin College of Engineering, and for our final project, we want to make your family holidays exactly as chaotic as you want them to be!
